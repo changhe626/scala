@@ -21,12 +21,21 @@ object Person{
 
     val arr=Array(1,4,6)
     println(arr.toBuffer)
+
+
+    val p2=Person(1,"4")
+    println("p2 is : "+p2)
   }
 
 
 
-  def apply(x:Int,y:Int):String={
-    x+y+""
+  def apply(x:Int,y:Int):Int={
+    x+y
+  }
+
+  //进行apply方法的重载
+  def apply(x:Int,y:String):String={
+    x+y
   }
 
 

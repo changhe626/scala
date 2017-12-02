@@ -14,4 +14,6 @@ class Cat  extends  Animal {
   override def fly(): Unit = {
     println("猫不会飞,哈哈哈")
   }
+
+  override def drink(name: String): Unit = ???
 }

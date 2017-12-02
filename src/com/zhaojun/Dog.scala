@@ -9,6 +9,8 @@ class Dog extends Animal {
     println("dog is eat")
     "dog"
   }
+
+  override def drink(name: String): Unit = ???
 }
 
 object Dog{

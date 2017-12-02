@@ -6,6 +6,8 @@ package com.zhaojun
   */
 abstract  class Animal extends Fly with Eat {
 
+  def wark(name:String)=println(name+"is warking")
 
+  def drink(name :String);
 
 }

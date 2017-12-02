@@ -1,0 +1,19 @@
+
+
+1.akka 实现了Actor编程模型,actor是通过发行消息来进行通信的
+2.akka真正用过通信的是Actor(Actor的一个实例)
+3.Actor是多例的
+4.Actor是由ActorSystem创建的,ActorSystem是单例,ActorSystem的功能是创建和监控其创建的Actor
+,一个进程里面只有一个ActorSystem即可,多了浪费
+
+
+多个ActorSystem....两个master(一个活跃的Active,一个备份StandBy),多个小弟
+
+Actor之间进行通信
+
+
+使用zookeeper进行两个master的管理
+
+
+
+

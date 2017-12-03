@@ -4,6 +4,8 @@ import com.akkarpc.Worker
 import com.sun.crypto.provider.AESCipher
 import com.sun.crypto.provider.AESCipher.AES128_CBC_NoPadding
 
+import scala.runtime.RichInt
+
 /**
   * Created by zk on 2017/12/2.
   * 作用: com.high.
@@ -81,14 +83,48 @@ object HighDemo{
   //只要类型一样,优先使用隐士值,不使用100,使用20
   //一个object里面
   //如果没有这个,就会使用上面的100了
-  //无法使用import引用其他类的这个隐士值
 
-  //这样导入,才可以用
+
+  //在class中无法使用直接import引用其他类的这个隐士值
+  //这样导入隐士值,才可以用
   val c=new Worker
   import c._
 
+  //为什么要new 类,因为是class中内容,到能够导入
+
+
+  //如果是object 中的 隐士值
+  //可以直接import Context._   导入,就能够使用隐士值了
+
+  //如果object里面有相同类型的多个,报错了
+  //如果多个隐士值,不能使用类型一样的.首先找的是类型一样的隐士值
+
+
   println(m2(10))      // 30   相当于10 和 99 相加了
   println(m2(10)(30))  //40
+
+
+
+
+  1 to 10
+  //到底哪里来的?  隐士转换  是一个方法
+  /**
+    * 为什么可以调用?
+    * 原来Int上没这个方法,典型的隐士转换,在RichInt里的
+    * 装饰模式,包一层
+    * 把Int包装成RichInt就能调用to方法了
+    * 是在PreDef  包装的
+    *
+    * :implicits -v  查看已经导入的,默认导入了
+    *
+    */
+
+  val i: RichInt = new RichInt(4)
+  i.to(10)
+
+
+
+
 
 
 

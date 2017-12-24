@@ -23,8 +23,8 @@ class Miss[T] {
 object Miss{
   def main(args: Array[String]): Unit = {
     import  MyPreDef._
-    val m=new Miss[Girl]
-    m.choose(new Girl(""...),new Girl(""...))
+    //val m=new Miss[Girl]
+    //m.choose(new Girl(""...),new Girl(""...))
   }
 
 }

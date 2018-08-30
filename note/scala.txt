@@ -1,0 +1,895 @@
+代码块,都有返回结果,哪怕是空
+
+for(i <- 1 to 10) println(i)
+
+1 to 10
+
+for(i <- 0 until 10) println(i)
+打印0-9
+
+0 until 10
+
+
+val str="hello123"
+for( c <-str) println(c) 依次遍历字符串
+
+str.charAt(0)  对应的字符
+str.charAt(100)  报出异常了
+
+字符串的遍历
+for(c<- 0 until str.length) println(str.charAt(i))
+
+定义数组
+val arr=Array(1,2,3,5,7,4)
+取值
+for(i<- arr) println(i)
+
+取值
+arr(0)
+也会造成越界
+
+for(i<- 0 until arr.length) println(arr(i))
+
+双层for循环
+for(i<- 1 to 3;j<- 1 to 3 if i!=j )
+print((10*i+j)+"")
+println()
+
+
+for推导式:如果for循环的循环体以yield开始,则该循环会构建出一个集合
+//每次迭代生成集合中的一个值
+val v=for(i<- 1 to 10) yield i*10
+println(v)
+
+
+val arr=Array(1,3,5,3,7)
+for(i<- arr) yield i*10
+返回的类型和原类型相同
+
+
+arr.map(_ * 10)
+arr.map(x=>x*10)
+
+取出其中偶数,*200
+for(i<-arr if i%2==0) yield i*200
+
+arr.filter(m => m%2==0).map(n=>n*200)
+
+
+
+方法的定义
+def say():Unit={println("hi")  } 
+def say(){println("hi") }
+def say()={println("hi")}
+
+
+
+如何定义函数?
+特征:=>
+=> 左边是参数列表,右边是函数体,可以用{}
+(x:Int,y:Int)=>x+y
+
+val f1=(x:Int,y:Int)=>x+y
+val f2:(Int,Int)=>Int={(x,y)=>x+y}  不容易看,详细
+
+用变量f1来引用定义的函数.
+f1(3,5)
+函数可以作为参数传入到方法里.
+
+val f3:Int=>Double={ x=>x.toDouble}
+
+val f4=(x:Int)=>x.toDouble 
+
+无参,只打印5,返回Unit
+val f5=() =>println(5)
+调用f5()
+
+
+输入两个Int,返回Double类型的...new 接口,实现方法
+val f6=new Function2[Int,Int,Double]{
+	def apply(x:Int,y:Int)={x+y}
+}
+
+匿名函数(用的最多的是直接放到方法里):
+
+
+
+函数可以作为参数传递到方法中
+
+
+val f=(x:Int)=>x*x
+
+f(5)
+
+val arr=Array(1,2,3,4,5)
+
+arr.map(f)
+
+匿名函数
+arr.map((x:Int)=>x*x)
+省略类型
+arr.map((x)=>x*x)
+
+arr.map(x=>x*x)
+
+arr.map(_*10)
+
+
+val p=(x:Int)=> x%2==0
+
+arr.filter(p)
+
+
+val p= (x:Int)=>x%2==0
+
+arr.filter(p)
+
+arr.filter((x)=>x%2==0)
+
+arr.filter(x=>x%2==0)
+
+arr.filter(_%2==0)
+
+
+map的实现方式?我们自己怎么实现一个这样的方法,接受函数作为参数,返回处理完的结果.
+
+var arr=Array(1,2,3,4,5,6)
+val r=arr.map(_*10)
+
+定义一个Transform类,有一个叫map的方法,接收一个数组,返回一个新的数组 ArrayList[Integer] map(List[Integer] list,?)
+方法转换成函数:
+val arr=Array(1,2,3,4,5,6,7)
+
+arr.map(x=>x*x)
+定义方法:
+def m1(x:Int):Int=x*x
+m1(5)
+
+arr.map(m1)   行吗?   可以的
+
+
+
+
+
+
+
+scala集合
+
+数组:
+val arr=Array[Int](1,3,5,7,4)
+
+val arr2=new Array[Int](8)   8个0 ,8是长度,Int的默认值是0
+
+val arr3=new Array[String](6)   6个null
+
+val arr4=Array("a","c","d")
+
+print(arr.toBuffer)  打印
+
+val修饰的数组,能够改变其中的值.引用不能改,但是数组中的内容可以改变
+arr4(1)="hel"  修改
+
+Array长度也不可变
+
+变长的集合,可变集合
+import scala.collection.mutable._
+val ab=new ArrayBuffer[Int]()   长度为0
+
+ab+=1  追加进去   ab.append(8)   可以append多个 (9,9,9,9)
+
+ab+=3
+
+ab-=3  减去,是从前往后减去,从前往后找       
+
+ab-=4  不存在就不会被删除了
+
+ab+=(1,2,3)
+
+val ab2=ArrayBuffer(5,4,3,2,1)
+
+将ab2的元素加到ab里去 ab++=ab2
+
+ab++=Array(6,7)     
+ab++=ArrayBuffer(8,7)  也可以是ab++ArrayBuffer(8,7)
+  
+ab.insert(0,0,-1)  这些元素追击到前面去了
+第一个参数是角标,后面是要追加的元素
+
+ab.insert(10,2)  超过范围会报数组下标越界异常
+
+ab2.remove(1,4)  从下标1开始移除4个,只有ArrayBuuffer有这个方法的
+
+ab2.remove(10,1)   超过范围会报数组下标越界异常
+
+
+集合2
+定长/变长
+不可变/可变集合
+immutable/mutable
+
+val im=new  scala.collection.immutable.HashMap[String,Int]()
+
+val im2=scala.collection.immutable.HashMap[String,Int]("1"->1,"2"->2,"3"->3)
+
+im2("1")=10   不可变集合,他的内容都不可改变!!!
+
+
+可变
+val  map=new scala.collection.mutable.HashMap[String,Int]()
+
+map.put("1",1)
+
+map+=("2"->2)
+
+map+="2"->2
+
+map-="1"   删除一个key-value
+
+
+List
+val ls=List(1,2,3,4)
+
+ls(0)=44  不可变的list改变值失败
+
+可变的
+val  lb=ListBuffer(1,3,5,7)
+
+追加多个  lb+=(5,6,8)
+lb++=ls
+
+
+Set
+
+val set=Set(1,3,4,5,5,6)
+
+set+=7   无序哦
+
+还有不可变的Set
+
+set-=2
+
+移除不包含的元素也不报错了
+
+
+
+
+
+val arr=Array("hello tom hello jerry","hello tom hello tom","hello tom hello jerry")
+
+求单词的频率
+
+arr.map(x=>x.spilt(" ")).flatten
+arr.map(_.spilt(" ")).flatten
+val words=arr.flatMap(_.spilt(" "))
+
+
+
+原组:
+val t=("a",1)
+特殊集合,多种类型,多个
+
+val t2=("a",1,2.0,"hello",100L)
+
+取出元素
+t2._1   ._下标从1开始的
+
+两个元素就是对偶原组.就是map
+
+val m1=Map("a"->1,"b"->2)
+
+原组定义map
+val m2=Map(("c",1),("d",2),("e",3))
+
+
+
+
+words.map((_,1))  每个单词都是一个map了,value是1
+
+words.map(x=>(x,1))
+
+val grouped=wordAndOne.groupBy(_._1)  按照原组的第一个元素分组
+
+
+val res=grouped.map(t => (t._1,t._2.length))  得到结果
+得到一个hashMap
+
+
+val wordsRes=res.toList
+
+wordsRes.sortBy(_._2)  按照升序排
+
+降序wordsRes.sortBy(_._2).reverse
+
+
+
+
+arr.flatMap(_.spilt(" ")).map((_,1)).groupBy(_._1),map(t=>t._1,t._2.length).toList.sortBy(_._2).reverse
+
+
+
+函数可以作为参数传递到方法中
+
+
+val f=(x:Int)=>x*x
+
+f(5)
+
+val arr=Array(1,2,3,4,5)
+
+arr.map(f)
+
+匿名函数
+arr.map((x:Int)=>x*x)
+省略类型
+arr.map((x)=>x*x)
+
+arr.map(x=>x*x)
+
+arr.map(_*10)
+
+
+val p=(x:Int)=> x%2==0
+
+arr.filter(p)
+
+
+
+
+把方法转换成了函数.....
+
+m1是方法名,  m1 _   返回一个函数,进行了转换
+
+val f=m1 _ 得到一个函数
+arr.map(f)
+
+arr.map(m1 _)
+
+
+arr.map(x=>m1(x))   输入是x,输出是m1(x)的结果
+
+
+复杂的函数,接受一个函数作为参数....数据在那里,就看你传递什么逻辑进来了
+def m2(f:(Int,Int)=>Double):Unit={
+print( f(1,2) )
+}
+
+调用 m2((x:Int,y:Int)=>(x+y).toDouble)
+
+
+
+
+val arr=Array("hello tom hello jerry","hello tom hello tom","hello tom hello jerry")
+
+求单词的频率
+
+arr.map(x=>x.split(" ")).flatten
+arr.map(_.split(" ")).flatten
+val words=arr.flatMap(_.split(" "))
+
+
+
+原组:
+val t=("a",1)
+特殊集合,多种类型,多个
+
+val t2=("a",1,2.0,"hello",100L)
+
+取出元素
+t2._1   ._下标从1开始的         超过下标报错,0下标会报错
+
+两个元素就是对偶原组.就是map
+
+val m1=Map("a"->1,"b"->2)
+
+原组定义map
+val m2=Map(("c",1),("d",2),("e",3))
+
+
+
+
+words.map((_,1))  每个单词都是一个map了,value是1
+
+words.map(x=>(x,1))
+
+val grouped=wordAndOne.groupBy(_._1)  按照原组的第一个元素分组
+
+
+val res=grouped.map(t => (t._1,t._2.length))  得到结果
+得到一个hashMap
+
+
+val wordsRes=res.toList
+
+wordsRes.sortBy(_._2)  按照升序排
+
+降序wordsRes.sortBy(_._2).reverse
+
+arr.flatMap(_.split(" ")).map((_,1)).groupBy(_._1),map(t=>t._1,t._2.length).toList.sortBy(_._2).reverse
+
+
+Iterator（迭代器）不是一个集合，它是一种用于访问集合的方法。
+val it = Iterator("Baidu", "Google", "Runoob", "Taobao")
+最大值it.max,最小值it.min   注意一次迭代就结束了,不能回去的
+
+it.size 或 it.length 方法来查看迭代器中的元素个数
+
+
+复习:
+定义方法: def m1(x:Int):Int=x+2
+
+如果有返回一定有等号=
+
+
+定义函数3种:
+val f=(x:Int)=>x*x
+
+val f1:Int=>Int={x=>x*x}
+
+new Function2  重写其中的方法...
+
+new Function2[Int,Double,(Int,Double)]{...}
+
+
+        传参列表      返回一个原组        返回一个原组
+val f2:(Int,Double)=>(Double,Int)={(x,y)=>(y,x)}
+
+
+方法可以转换为函数,函数可以作为参数传递到方法中
+
+val arr=Array(1,2,3,4)
+偶数位置平方
+arr.filter(_%2==0).map(x=>x*x)
+
+val arr 数组,指向不可变,但是内容可变
+
+可变数组,导包
+val ab=new ArrayBuffer(1,2,3,4,5)
+
+ab+=3 增加
+ab-=5 减少
+
+集合: 可变集合         不可变集合
+      长度内容都可变   长度/内容都不可变
+
+默认是不可变的
+val list=List(1,2,3,4,5)
+list(0)
+
+val map=Map("a"->1,"b"->2,"c"->3)  不可变
+map("a")
+map("b")=100
+
+Predef 类中有定义
+
+想用可变的导包
+scala.collection.mutable._
+
+map+="d"->4
+map+=(("e",5))  原组
+
+
+
+
+JAVA实现函数式编程:
+
+定义一个Mylist类,自己实现map方法, new Mylist(list).map().filter()
+装饰,增强
+public class Mylist{
+	private List<String> list;
+
+	List<String> lst=new ArrayList<String>();
+
+	public Mylist(List<String> list){
+		this.list=list;
+	}
+
+
+	//定义一个接口MapFunction,传递函数进来
+	public List<String> map(MapFunction func){
+//	public Mylist map(MapFunction func){    修改称为链式编程,不断的可以.map().map()
+//  for(int i=0;i<list.size();i++){
+//	String tmp=lst.get(i);
+//	String s=func.operate(tmp);
+//	lst.set(i,s);
+//  return list;
+//  }
+
+		for(String str list){
+			String s=func.operate(str);
+			lst.add(s);
+		}
+	return lst;
+	}
+
+}
+
+public interface MapFunction{
+	String operate(String str);
+
+	继续添加filter方法
+}
+
+
+不同的实现就可以得到不同的返回了
+
+
+函数式编程,就是可以传一个任意具体的实现函数.
+
+
+val arr=Array(1,2,3,4,5)
+arr.reduce((x,y)=>x+y)
+
+((((1+2)+3)+4)+5
+从左到右的依次相加
+不断的给x赋值,再加上y
+
+里面调用的reduceLeft()方法
+
+由我们汇总的规则决定
+arr.reduce(_*_)   累乘
+
+list.reduceLeft(_+_)
+
+reduceRight  从右边开始计算
+
+
+list.fold(10)(_+_)   累加,只是可以加上一个初始值
+
+fold 调用foldLeft(z)(op)
+和上面的reduce类似
+
+初始值是100
+((100+1)+2)+3
+
+
+
+需求:List中嵌套List,求所有总和,汇总
+val arr=List(List(1,2,4),List(4,7),List(6,8))
+arr.flatten.sum   可以
+arr.aggregate(0)(_+_.sum,_+_)    初始值0,
+第一步是对每个list求和,第二部是累加所有和
+
+arr.aggregate(0)((x,y)=>x+y.sum,(m,n)=>m+n)
+
+x代表初始值
+
+如果是100   也是只加一次.
+
+
+
+
+list1 union list2  合并两个List在一起
+
+list1.union(list2)    list1在前面
+不去重复,set去重复
+
+交集
+list1.intersect(list2)
+
+差集
+list1.diff(list2)   list1中含有,list2中没有的
+
+
+scala并行化集合
+val li0=List(1,3,6,7,3,5,9)
+li0.reduce()   从左到右的依次相加.....数据如果太大,就很慢了
+数据分片,并行计算.
+
+并行集合,多线程计算
+
+li0.par
+变成并行化集合
+li0.par.reduce(_+_)
+
+li0.par.fold(100)(_+_)  这个初始值会被应用多次...所以结果不确定
+
+初始值为0就可以避免问题了
+
+List中嵌套List
+arr.aggregate(0)(_+_.sum,_+_)
+
+arr.par.aggregate(100)(_+_.sum,_+_)
+分配的线程数不会超过里面的小list的个数....
+
+li0.par.fold(1)(_*_)   累乘的初始值是1
+
+
+
+scala类的定义
+
+class Student{
+ val id=10
+ val id2:Int=100
+
+ val name="tomcat"
+
+ var age=10
+
+ private var name="tom"  //可读可写
+ //因为用private修饰的,只能在类中和伴生对象中使用
+
+ private[this] var password="9527"
+ //只能本类中访问,伴生中不能访问
+
+ //不能执行,非静态的
+ def main(args:Array[String]):Unit={
+ }
+
+}
+
+静态的,在里面的就是静态属性,方法
+object Student{
+
+	def main(args:Array[String]):Unit={
+	pritln("hello ")
+
+	val s=new Student   //可以不加()
+	prinln(s.id)
+	s.id=200   //报错
+	prinln(s.age)
+	s.age=20   //可以修改
+	prinln(s.age)
+
+ }
+}
+
+val 不可写,只可读,var可读可写
+
+
+伴生对象:跟类名相同,且在同一个文件中
+
+
+object TestObject{
+  def main(args:Array[String]):Unit={
+	val s1=new Student
+	s1.age
+	s1.name  //访问不到了
+
+  }
+}
+
+
+
+flatMap, flatten
+
+flatten: flatten[B]: List[B] 对列表的列表进行平坦化操作 flatMap: flatMap[B](f: (A) ⇒ GenTraversableOnce[B]): List[B] map之后对结果进行flatten
+
+定义一个变换f, 把f应用列表的每个元素中，每个f返回一个列表，最终把所有列表连结起来。
+
+val text = List("A,B,C","D,E,F")
+val textMapped = text.map(_.split(",").toList) // List(List("A","B","C"),List("D","E","F"))
+val textFlattened = textMapped.flatten          // List("A","B","C","D","E","F")
+val textFlatMapped = text.flatMap(_.split(",").toList) // List("A","B","C","D","E","F")
+
+
+reduce[A1 >: A](op: (A1, A1) ⇒ A1): A1
+
+定义一个变换f, f把两个列表的元素合成一个，遍历列表，最终把列表合并成单一元素
+
+
+
+
+
+函数可以作为参数传递到方法中
+
+
+val f=(x:Int)=>x*x
+
+f(5)
+
+val arr=Array(1,2,3,4,5)
+
+arr.map(f)
+
+匿名函数
+arr.map((x:Int)=>x*x)
+省略类型
+arr.map((x)=>x*x)
+
+arr.map(x=>x*x)
+
+arr.map(_*10)
+
+
+val p=(x:Int)=> x%2==0
+
+arr.filter(p)
+
+
+
+
+把方法转换成了函数.....
+
+m1是方法名,  m1 _   返回一个函数,进行了转换
+
+val f=m1 _ 得到一个函数
+arr.map(f)
+
+arr.map(m1 _)
+
+
+arr.map(x=>m1(x))   输入是x,输出是m1(x)的结果
+
+
+复杂的函数,接受一个函数作为参数....数据在那里,就看你传递什么逻辑进来了
+def m2(f:(Int,Int)=>Double):Unit={
+print( f(1,2) )
+}
+
+调用 m2((x:Int,y:Int)=>(x+y).toDouble)
+
+
+
+
+val arr=Array("hello tom hello jerry","hello tom hello tom","hello tom hello jerry")
+
+求单词的频率
+
+arr.map(x=>x.split(" ")).flatten
+arr.map(_.split(" ")).flatten
+val words=arr.flatMap(_.split(" "))
+
+
+
+原组:
+val t=("a",1)
+特殊集合,多种类型,多个
+
+val t2=("a",1,2.0,"hello",100L)
+
+取出元素
+t2._1   ._下标从1开始的         超过下标报错,0下标会报错
+
+两个元素就是对偶原组.就是map
+
+val m1=Map("a"->1,"b"->2)
+
+原组定义map
+val m2=Map(("c",1),("d",2),("e",3))
+
+
+
+
+words.map((_,1))  每个单词都是一个map了,value是1
+
+words.map(x=>(x,1))
+
+val grouped=wordAndOne.groupBy(_._1)  按照原组的第一个元素分组
+
+
+val res=grouped.map(t => (t._1,t._2.length))  得到结果
+得到一个hashMap
+
+
+val wordsRes=res.toList
+
+wordsRes.sortBy(_._2)  按照升序排
+
+降序wordsRes.sortBy(_._2).reverse
+
+arr.flatMap(_.split(" ")).map((_,1)).groupBy(_._1),map(t=>t._1,t._2.length).toList.sortBy(_._2).reverse
+
+
+Iterator（迭代器）不是一个集合，它是一种用于访问集合的方法。
+val it = Iterator("Baidu", "Google", "Runoob", "Taobao")
+最大值it.max,最小值it.min   注意一次迭代就结束了,不能回去的
+
+it.size 或 it.length 方法来查看迭代器中的元素个数
+
+
+复习:
+定义方法: def m1(x:Int):Int=x+2
+
+如果有返回一定有等号=
+
+
+定义函数3种:
+val f=(x:Int)=>x*x
+
+val f1:Int=>Int={x=>x*x}
+
+new Function2  重写其中的方法...
+
+new Function2[Int,Double,(Int,Double)]{...}
+
+
+        传参列表      返回一个原组        返回一个原组
+val f2:(Int,Double)=>(Double,Int)={(x,y)=>(y,x)}
+
+
+方法可以转换为函数,函数可以作为参数传递到方法中
+
+val arr=Array(1,2,3,4)
+偶数位置平方
+arr.filter(_%2==0).map(x=>x*x)
+
+val arr 数组,指向不可变,但是内容可变
+
+可变数组,导包
+val ab=new ArrayBuffer(1,2,3,4,5)
+
+ab+=3 增加
+ab-=5 减少
+
+集合: 可变集合         不可变集合
+      长度内容都可变   长度/内容都不可变
+
+默认是不可变的
+val list=List(1,2,3,4,5)
+list(0)
+
+val map=Map("a"->1,"b"->2,"c"->3)  不可变
+map("a")
+map("b")=100
+
+Predef 类中有定义
+
+想用可变的导包
+scala.collection.mutable._
+
+map+="d"->4
+map+=(("e",5))  原组
+
+
+
+
+JAVA实现函数式编程:
+
+定义一个Mylist类,自己实现map方法, new Mylist(list).map().filter()
+装饰,增强
+public class Mylist{
+	private List<String> list;
+
+	List<String> lst=new ArrayList<String>();
+
+	public Mylist(List<String> list){
+		this.list=list;
+	}
+
+
+	//定义一个接口MapFunction,传递函数进来
+	public List<String> map(MapFunction func){
+//	public Mylist map(MapFunction func){    修改称为链式编程,不断的可以.map().map()
+//  for(int i=0;i<list.size();i++){
+//	String tmp=lst.get(i);
+//	String s=func.operate(tmp);
+//	lst.set(i,s);
+//  return list;
+//  }
+
+		for(String str list){
+			String s=func.operate(str);
+			lst.add(s);
+		}
+	return lst;
+	}
+
+}
+
+public interface MapFunction{
+	String operate(String str);
+
+	继续添加filter方法
+}
+
+
+不同的实现就可以得到不同的返回了
+
+
+函数式编程,就是可以传一个任意具体的实现函数.
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+

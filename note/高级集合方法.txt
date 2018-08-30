@@ -1,0 +1,42 @@
+1.
+val list=List(1,2,3,4,5,6)
+list.map(x=>x*2)
+list.filter(_%2==0)
+list.sorted
+list.sortBy(x=>x)  按照自身数字排序
+list.sortWith((x,y)=>x<y)   数字的升序排列
+list.sortWith((x,y)=>x.toString<y.toString)  字符串 按照字典顺序排序
+
+list.reverse   反转
+
+list.grouped(4)   得到迭代器,按照每4个一组,最后的不够就在一组了 ,使用toList得到list,查看分组情况
+
+压平flatMap()    flatten
+
+求和list.sum  底层使用的是 list.reduce()   汇总
+求和
+list.reduce(_+_)     累加
+求所有乘积
+list.reduce(_*_)     所有累乘
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
